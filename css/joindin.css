@@ -53,6 +53,10 @@ footer div {
     max-width: 1024px;
 }
 
+footer a {
+     rgb(0, 70, 128);
+}
+
 .cursive {
     font-style: oblique;
 }
