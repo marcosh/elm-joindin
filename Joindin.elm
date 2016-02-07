@@ -3,7 +3,8 @@ module Joindin where
 import Conference exposing (Conference, decoderConference, idConference)
 
 import Effects exposing (Effects, none, task, batch)
-import Html exposing (Html, div, h1, text)
+import Html exposing (Html, div, h1, span, text)
+import Html.Attributes exposing (class)
 import Signal exposing (Address, forwardTo)
 import Http exposing (get)
 import Json.Decode exposing (Decoder, object1, list, (:=))
@@ -79,7 +80,11 @@ retrieveTalkEffect ( id, conference ) =
 view : Address Action -> Joindin -> Html
 view address joindin =
     let
-        header = h1 [] [ text  "Joindin slides" ]
+        header = h1 []
+            [ text  "The "
+            , span [ class "cursive" ] [ text "slides" ]
+            , text " archive"
+            ]
         conferences = List.map ( viewConference address ) joindin.conferences
     in
         div []

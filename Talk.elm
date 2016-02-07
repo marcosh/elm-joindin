@@ -1,7 +1,7 @@
 module Talk where
 
 import Html exposing (Html, div, text, a, span)
-import Html.Attributes exposing (href)
+import Html.Attributes exposing (href, class, target)
 import Signal exposing (Address)
 import List exposing (map, intersperse)
 import Json.Decode exposing (Decoder, string, object1, object6, list, (:=))
@@ -18,10 +18,6 @@ type alias Talk =
     , speakers : List String
     }
 
-init : String -> String -> String -> String -> String -> List String -> Talk
-init title description stub slides_link uri speakers =
-    Talk title description stub slides_link uri speakers
-
 -- UPDATE
 
 type Action = NoOp
@@ -33,13 +29,13 @@ update action talk = talk
 
 view : Address Action -> Talk -> Html
 view address talk =
-  div []
-    [ div [] [ a [ href talk.uri ] [ text talk.title ]
+  div [ class "talk" ]
+    [ div [] [ a [ href talk.uri, class "title", target "_blank" ] [ text talk.title ]
         , text " by "
         , span [] ( map spanWrap ( intersperse  ", " talk.speakers ))
         ]
     , divWrap talk.description
-    , a [ href talk.slides_link ] [ text "Slides" ]
+    , a [ href talk.slides_link, class "slides", target "_blank" ] [ text "Go get the ", span [ class "cursive" ] [ text "slides" ] ]
     ]
 
 divWrap : String -> Html

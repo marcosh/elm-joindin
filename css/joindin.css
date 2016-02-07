@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    background-color: seashell;
+}
+
+h1 {
+    margin: 0;
+    padding: 20px 0px;
+    text-align: center;
+    background-color: lightseagreen;
+    color: seashell;
+}
+
+h2 {
+    text-align: center;
+    color: lightseagreen;
+}
+
+a {
+    text-decoration: none;
+    color: teal;
+}
+
+a:visited {
+    color: rgb(0, 70, 128);
+}
+
+a:hover {
+    color: coral;
+}
+
+.talk {
+    max-width: 1024px;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+.talk div {
+    margin-bottom: 5px;
+}
+
+.talk .title {
+    font-size: 130%;
+}
+
+.cursive {
+    font-style: oblique;
+}
