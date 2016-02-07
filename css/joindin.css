@@ -3,12 +3,16 @@ body {
     background-color: seashell;
 }
 
-h1 {
+header, footer {
     margin: 0;
     padding: 20px 0px;
     text-align: center;
     background-color: lightseagreen;
     color: seashell;
+}
+
+h1 {
+    margin: 0;
 }
 
 h2 {
@@ -42,6 +46,11 @@ a:hover {
 
 .talk .title {
     font-size: 130%;
+}
+
+footer div {
+    margin: 10px auto;
+    max-width: 1024px;
 }
 
 .cursive {

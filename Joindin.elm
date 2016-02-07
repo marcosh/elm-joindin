@@ -3,8 +3,8 @@ module Joindin where
 import Conference exposing (Conference, decoderConference, idConference)
 
 import Effects exposing (Effects, none, task, batch)
-import Html exposing (Html, div, h1, span, text)
-import Html.Attributes exposing (class)
+import Html exposing (Html, div, h1, span, a, header, footer, text)
+import Html.Attributes exposing (class, href)
 import Signal exposing (Address, forwardTo)
 import Http exposing (get)
 import Json.Decode exposing (Decoder, object1, list, (:=))
@@ -80,15 +80,31 @@ retrieveTalkEffect ( id, conference ) =
 view : Address Action -> Joindin -> Html
 view address joindin =
     let
-        header = h1 []
-            [ text  "The "
-            , span [ class "cursive" ] [ text "slides" ]
-            , text " archive"
+        title = header []
+            [ h1 []
+                [ text  "The "
+                , span [ class "cursive" ] [ text "slides" ]
+                , text " archive"
+                ]
             ]
         conferences = List.map ( viewConference address ) joindin.conferences
+        foot = footer []
+            [ div []
+                [ text "This page is realized using the data exposed by the "
+                , a [ href "https://joind.in/" ] [ text "Joind.in" ]
+                , text " API's."
+                ]
+            , div []
+                [ text "This page is made using "
+                , a [ href "http://elm-lang.org/" ] [ text "ELM" ]
+                , text ", a rective funtional programming language that runs in the browser. You can find the source code on "
+                , a [ href "https://github.com/marcosh/elm-joindin" ] [ text "https://github.com/marcosh/elm-joindin" ]
+                , text ", contributions are more than welcome!"
+                ]
+            ]
     in
         div []
-            ( header :: conferences )
+            ( List.concat [ title :: conferences, [ foot ]])
 
 viewConference : Address Action -> ( String, Conference ) -> Html
 viewConference address ( id, conference ) =
