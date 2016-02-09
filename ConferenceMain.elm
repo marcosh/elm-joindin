@@ -7,12 +7,13 @@ import Task exposing (Task)
 app =
   start
     { init = init
-        "SymfonyCon Paris 2015"
-        "symfonycon-paris-2015"
-        "SensioLabs is proud to organize the third edition of the SymfonyCon"
-        "http://pariscon2015.symfony.com/"
-        "https://joind.in/event/symfonycon-paris-2015"
-        "http://api.joind.in/v2.1/events/4063/talks"
+        "SunshinePHP 2016"
+        "sunshinephp-2016"
+        "The large PHP community in South Florida has organized its third annual PHP developer conference in Miami, and you're invited!"
+        "http://sunshinephp.com"
+        "http://api.joind.in/v2.1/events/4525"
+        ( Just "sphp_joindin3.png" )
+        "http://api.joind.in/v2.1/events/4525/talks"
     , update = update
     , view = view
     , inputs = []

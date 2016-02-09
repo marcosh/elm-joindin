@@ -3,10 +3,11 @@ module Conference where
 import Talk exposing (Talk, talkDecoder, stubTalk)
 
 import Effects exposing (Effects, none, task)
-import Html exposing (Html, div, h2, text)
+import Html exposing (Html, div, h2, text, img)
+import Html.Attributes exposing (class, src)
 import Signal exposing (Address, forwardTo)
 import Http exposing (get)
-import Json.Decode exposing (Decoder, object1, object6, list, string, (:=))
+import Json.Decode exposing (Decoder, object1, object7, list, string, (:=), maybe)
 import Task exposing (toMaybe)
 import List exposing (filter)
 import String
@@ -21,19 +22,20 @@ type alias Conference =
     , description : String
     , uri : String
     , joindinUri : String
+    , icon : Maybe String
     , talksUri : String
     , talks : Talks
     }
 
-init : String -> String -> String -> String -> String -> String -> ( Conference, Effects Action )
-init name urlFrienlyName description uri joindinUri talksUri =
-    ( build name urlFrienlyName description uri joindinUri talksUri
+init : String -> String -> String -> String -> String -> Maybe String -> String -> ( Conference, Effects Action )
+init name urlFrienlyName description uri joindinUri icon talksUri =
+    ( build name urlFrienlyName description uri joindinUri icon talksUri
     , retrieveTalks ( talksUri ++ "?verbose=yes" )
     )
 
-build : String -> String -> String -> String -> String -> String -> Conference
-build name urlFrienlyName description uri joindinUri talksUri =
-    Conference name urlFrienlyName description uri joindinUri ( talksUri ++ "?verbose=yes" ) []
+build : String -> String -> String -> String -> String -> Maybe String -> String -> Conference
+build name urlFrienlyName description uri joindinUri icon talksUri =
+    Conference name urlFrienlyName description uri joindinUri icon ( talksUri ++ "?verbose=yes" ) []
 
 -- UPDATE
 
@@ -57,6 +59,7 @@ addTalks conference maybeTalks =
         conference.description
         conference.uri
         conference.joindinUri
+        conference.icon
         conference.talksUri
         -- ( Maybe.withDefault [] maybeTalks ) -- this shows all the talks
         ( filterTalksWithSlides maybeTalks )
@@ -80,11 +83,16 @@ view address conference =
         text ""
     else
         let
+            iconPath =
+                case conference.icon of
+                    Just path -> "https://joind.in/inc/img/event_icons/" ++ path
+                    Nothing -> "https://joind.in/img/event_icons/none.png"
+            conferenceLogo = img [ src iconPath ] []
             conferenceNameHeader = ( h2 [] [ text conference.name ] )
             conferenceTalks = ( List.map ( viewTalk address ) conference.talks )
         in
-        div []
-            ( conferenceNameHeader :: conferenceTalks )
+        div [ class "conference" ]
+            ( conferenceLogo :: conferenceNameHeader :: conferenceTalks )
 
 viewTalk : Address Action -> ( String, Talk ) -> Html
 viewTalk address ( stub, talk ) =
@@ -106,12 +114,13 @@ decoder = object1 identity
 -- OTHER
 
 decoderConference : Decoder Conference
-decoderConference = object6 build
+decoderConference = object7 build
     ( "name" := string )
     ( "url_friendly_name" := string )
     ( "description" := string )
     ( "website_uri" := string )
     ( "uri" := string )
+    ( maybe ( "icon" := string ))
     ( "talks_uri" := string )
 
 idConference : Conference -> ( String, Conference )
