@@ -87,12 +87,19 @@ view address conference =
                 case conference.icon of
                     Just path -> "https://joind.in/inc/img/event_icons/" ++ path
                     Nothing -> "https://joind.in/img/event_icons/none.png"
-            conferenceLogo = img [ src iconPath ] []
-            conferenceNameHeader = ( h2 [] [ text conference.name ] )
+            conferenceLogo = img
+                [ src iconPath
+                , class "logo"
+                ] []
+            conferenceName = ( h2 [] [ text conference.name ] )
+            conferenceHeader = div [ class "conferenceHeader" ]
+                [ conferenceLogo
+                , conferenceName
+                ]
             conferenceTalks = ( List.map ( viewTalk address ) conference.talks )
         in
         div [ class "conference" ]
-            ( conferenceLogo :: conferenceNameHeader :: conferenceTalks )
+            ( conferenceHeader :: conferenceTalks )
 
 viewTalk : Address Action -> ( String, Talk ) -> Html
 viewTalk address ( stub, talk ) =

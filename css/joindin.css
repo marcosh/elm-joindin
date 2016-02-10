@@ -16,8 +16,10 @@ h1 {
 }
 
 h2 {
-    text-align: center;
+    /* text-align: center; */
     color: lightseagreen;
+    /* float: left; */
+    display: inline-block;
 }
 
 a {
@@ -33,11 +35,25 @@ a:hover {
     color: coral;
 }
 
-.talk {
+.conference {
     max-width: 1024px;
-    margin: auto;
+    margin: 30px auto;
+}
+
+.conference .conferenceHeader {
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center;
+}
+
+.conference .conferenceHeader .logo {
+    padding-right: 20px;
+}
+
+.talk {
     margin-bottom: 15px;
     padding: 0px 10px;
+    clear: left;
 }
 
 .talk div {

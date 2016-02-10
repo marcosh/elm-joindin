@@ -3,7 +3,7 @@ module Joindin where
 import Conference exposing (Conference, decoderConference, idConference)
 
 import Effects exposing (Effects, none, task, batch)
-import Html exposing (Html, div, h1, span, a, header, footer, text)
+import Html exposing (Html, div, h1, h3, span, a, header, footer, text)
 import Html.Attributes exposing (class, href)
 import Signal exposing (Address, forwardTo)
 import Http exposing (get)
@@ -85,6 +85,11 @@ view address joindin =
                 [ text  "The "
                 , span [ class "cursive" ] [ text "slides" ]
                 , text " archive"
+                ]
+            , h3 [ class "subtitle" ]
+                [ text "Did you miss a conference? Here you will find all the latest slides uploaded on "
+                , a [ href "https://joind.in/" ] [ text "Joind.in" ]
+                , text " by the most amazing speakers in the wild!"
                 ]
             ]
         conferences = List.map ( viewConference address ) joindin.conferences
