@@ -29,23 +29,26 @@ type alias Conference =
     , talks : Talks
     }
 
-init : String -> String -> String -> String -> String -> Maybe String -> String -> ( Conference, Effects Action )
-init name urlFrienlyName description uri joindinUri icon talksUri =
+realTalksUri : String -> String
+realTalksUri talksUri =
     let
         splittedApiHost = split "." apiHost
-        realTalksUri = talksUri
+    in
+        talksUri
             |> parse
             |> ( \uri -> { uri | host = splittedApiHost, protocol = apiProtocol, port' = apiPort })
             |> Erl.toString
             |> ( \uri -> uri ++ "?verbose=yes" )
-    in
-        ( build name urlFrienlyName description uri joindinUri icon talksUri
-        , retrieveTalks realTalksUri
-        )
+
+init : String -> String -> String -> String -> String -> Maybe String -> String -> ( Conference, Effects Action )
+init name urlFrienlyName description uri joindinUri icon talksUri =
+    ( build name urlFrienlyName description uri joindinUri icon talksUri
+    , retrieveTalks ( realTalksUri talksUri )
+    )
 
 build : String -> String -> String -> String -> String -> Maybe String -> String -> Conference
 build name urlFrienlyName description uri joindinUri icon talksUri =
-    Conference name urlFrienlyName description uri joindinUri icon ( talksUri ++ "?verbose=yes" ) []
+    Conference name urlFrienlyName description uri joindinUri icon ( realTalksUri talksUri ) []
 
 -- UPDATE
 
