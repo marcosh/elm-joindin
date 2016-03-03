@@ -15,7 +15,7 @@ app =
             ++ "/v2.1/events?filter=past&verbose=yes"
     in
         start
-            { init = init ( apiProtocol ++ "://" ++ apiHost ++ "/v2.1/events?filter=past&verbose=yes" )
+            { init = init apiUri
             , update = update
             , view = view
             , inputs = []
