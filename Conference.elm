@@ -1,6 +1,7 @@
 module Conference where
 
 import Talk exposing (Talk, talkDecoder, stubTalk)
+import Config exposing (apiProtocol, apiHost, apiPort)
 
 import Effects exposing (Effects, none, task)
 import Html exposing (Html, div, h2, text, img)
@@ -10,7 +11,8 @@ import Http exposing (get)
 import Json.Decode exposing (Decoder, object1, object7, list, string, (:=), maybe)
 import Task exposing (toMaybe)
 import List exposing (filter)
-import String
+import String exposing (split)
+import Erl exposing (parse, toString)
 
 -- MODEL
 
@@ -29,9 +31,17 @@ type alias Conference =
 
 init : String -> String -> String -> String -> String -> Maybe String -> String -> ( Conference, Effects Action )
 init name urlFrienlyName description uri joindinUri icon talksUri =
-    ( build name urlFrienlyName description uri joindinUri icon talksUri
-    , retrieveTalks ( talksUri ++ "?verbose=yes" )
-    )
+    let
+        splittedApiHost = split "." apiHost
+        realTalksUri = talksUri
+            |> parse
+            |> ( \uri -> { uri | host = splittedApiHost, protocol = apiProtocol, port' = apiPort })
+            |> Erl.toString
+            |> ( \uri -> uri ++ "?verbose=yes" )
+    in
+        ( build name urlFrienlyName description uri joindinUri icon talksUri
+        , retrieveTalks realTalksUri
+        )
 
 build : String -> String -> String -> String -> String -> Maybe String -> String -> Conference
 build name urlFrienlyName description uri joindinUri icon talksUri =

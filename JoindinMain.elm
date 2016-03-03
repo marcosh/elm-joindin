@@ -1,22 +1,31 @@
 import Joindin exposing (init, update, view)
+import Config exposing (apiProtocol, apiHost, apiPort)
 
 import StartApp exposing (start)
 import Effects exposing (Never)
 import Task exposing (Task)
 
 app =
-  start
-    { init = init "http://api.joind.in/v2.1/events?filter=past&verbose=yes"
-    , update = update
-    , view = view
-    , inputs = []
-    }
+    let
+        apiUri = apiProtocol
+            ++ "://"
+            ++ apiHost
+            ++ ":"
+            ++ ( toString apiPort )
+            ++ "/v2.1/events?filter=past&verbose=yes"
+    in
+        start
+            { init = init ( apiProtocol ++ "://" ++ apiHost ++ "/v2.1/events?filter=past&verbose=yes" )
+            , update = update
+            , view = view
+            , inputs = []
+            }
 
 
 main =
-  app.html
+    app.html
 
 
 port tasks : Signal ( Task.Task Never () )
 port tasks =
-  app.tasks
+    app.tasks

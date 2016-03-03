@@ -1,0 +1,10 @@
+module Config where
+
+apiHost : String
+apiHost = "api.joind.in"
+
+apiProtocol : String
+apiProtocol = "http"
+
+apiPort : Int
+apiPort = 80

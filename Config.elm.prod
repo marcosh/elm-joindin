@@ -1,0 +1,10 @@
+module Config where
+
+apiProtocol : String
+apiProtocol = "http"
+
+apiHost : String
+apiHost = "localhost"
+
+apiPort : Int
+apiPort = 6081
